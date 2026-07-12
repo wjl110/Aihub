@@ -10,6 +10,7 @@
 | [`answer.md`](./answer.md) | 完整分析:链路梳理、误差归因、RAG 与治理检测模型建议、助审产品指标提醒 |
 | [`ads-gap.md`](./ads-gap.md) | 延伸:与广告部门自动审核项目的方向对比(助审优先 vs 替代优先) |
 | [`review-plan.md`](./review-plan.md) | 延伸:TCS 界面降噪方案评价、落地路径、数据字段定义与数据集建设新人指南 |
+| [`data-design.md`](./data-design.md) | 延伸:基于研判任务明细表(36 字段)的 RAG / 数据集 / SFT 完整设计方案 |
 
 ## 业务背景速览
 
