@@ -1,54 +1,50 @@
-# Astro Starter Kit: Basics
+# CQC 大模型运营 · AI 助审 Agent 问答展示站
 
-```
-npm create astro@latest -- --template basics
-```
+一个基于 [Astro](https://astro.build) 的静态展示站,用于呈现一次关于**字节 CQC 电商内容质量治理大模型运营**的完整问答:自动驳回模型、AI 助审 Agent、TCS 人审平台链路,以及「助审信息精确率仅 ~11%」的误差归因与改进方案。
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/s/github/withastro/astro/tree/latest/examples/basics)
+## 在线访问
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+站点通过 GitHub Actions 自动部署到 GitHub Pages:
 
-![basics](https://user-images.githubusercontent.com/4677417/186188965-73453154-fdec-4d6b-9c34-cb35c248ae5b.png)
+**https://wjl110.github.io/Aihub/**
 
+> 首次启用需在仓库 **Settings → Pages** 中将 Source 设置为 **GitHub Actions**,之后每次推送到 `main` 分支都会自动构建并发布。
 
-## 🚀 Project Structure
+## 页面结构
 
-Inside of your Astro project, you'll see the following folders and files:
+| 路由 | 内容 |
+| :--- | :--- |
+| `/` | 概览:业务链路、关键指标、回答要点 |
+| `/question/` | 问题原文(业务背景与当前思路) |
+| `/answer/` | 完整分析(误差归因、RAG 数据集、统一治理检测模型、助审产品指标) |
+
+## 项目结构
 
 ```
 /
-├── public/
-│   └── favicon.svg
+├── .github/workflows/deploy.yml   # GitHub Pages 自动部署工作流
+├── cqc-llm-ops-qa/                # 问答内容源文件(Markdown)
+│   ├── README.md                  # 内容导航与摘要
+│   ├── question.md                # 问题原文
+│   └── answer.md                  # 完整分析
 ├── src/
-│   ├── components/
-│   │   └── Card.astro
 │   ├── layouts/
-│   │   └── Layout.astro
+│   │   ├── Layout.astro           # 全局布局(导航栏 + 页脚)
+│   │   └── ArticleLayout.astro    # 文章页布局(Markdown 排版样式)
 │   └── pages/
-│       └── index.astro
-└── package.json
+│       ├── index.astro            # 概览首页
+│       ├── question.astro         # 渲染 question.md
+│       └── answer.astro           # 渲染 answer.md
+└── astro.config.mjs               # 已配置 site/base 以适配 GitHub Pages
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+问答正文维护在 `cqc-llm-ops-qa/` 目录的 Markdown 文件中,页面直接引用渲染,修改 Markdown 即可更新站点内容。
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 本地开发
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `npm install`          | Installs dependencies                            |
-| `npm run dev`          | Starts local dev server at `localhost:3000`      |
-| `npm run build`        | Build your production site to `./dist/`          |
-| `npm run preview`      | Preview your build locally, before deploying     |
-| `npm run astro ...`    | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```bash
+npm install     # 安装依赖
+npm run dev     # 本地开发服务器 localhost:3000
+npm run build   # 构建到 ./dist/
+npm run preview # 本地预览构建产物
+```

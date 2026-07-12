@@ -1,81 +1,279 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const pipeline = [
+	{ title: '队列 G1–G10', desc: '按类目划分(母婴、护理、箱包…),产出带违规码 / 规则码的 case' },
+	{ title: '自动驳回模型', desc: '策略因子 + 正则 + fewshot,召回率 ~95%,高置信违规直接驳回' },
+	{ title: '人审队列', desc: '~5% 漏放 + 低准确率 case 进入人工审核' },
+	{ title: 'AI 助审 Agent', desc: 'product_id → 商品信息插件 → 获取规则 → 违规点引用整理' },
+	{ title: 'TCS 人审平台', desc: '透传疑似违规点,供审核员参考,缩短单 case 审核时长' },
+];
+
+const metrics = [
+	{ value: '~11%', label: '助审信息精确率(核心痛点)', tone: 'bad' },
+	{ value: '~50%', label: '召回率 / 准确率', tone: 'mid' },
+	{ value: '95%', label: '自动驳回模型召回率', tone: 'good' },
+	{ value: '有偏', label: '评估数据集(存在标注误差)', tone: 'bad' },
+];
+
+const points = [
+	{
+		title: '① 分层误差归因',
+		desc: '修正评估集偏差(双人标注 + 仲裁,算 Kappa);把「细则定位误差」和「违规点判断误差」分开量化;认识到人审 case 是被前置模型筛过的难样本分布。',
+	},
+	{
+		title: '② 高质量数据集 + RAG',
+		desc: '以质检 / 研判复核结论为 label;固证(evidence)字段最有价值;检索键用「类目 + 违规码 + 标题 + 主图特征」多路召回;细则 ID 版本化防 label 腐化。',
+	},
+	{
+		title: '③ 统一治理检测模型',
+		desc: '定位为多标签风险分类器,输出违规码概率 + 置信度,按置信度分层路由:高置信直接驳回、中置信带 Tag 进 Agent、低置信直接人审。',
+	},
+	{
+		title: '④ 助审产品指标',
+		desc: '低精确率透传易造成锚定效应;TCS 侧埋点做 A/B 对比;覆盖量扩大跟着精确率走——先在单个「队列 × 体裁」做到 60%+ 再横向铺开。',
+	},
+];
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="CQC 大模型运营 · AI 助审 Agent 精确率分析">
 	<main>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-		</p>
-		<ul role="list" class="link-card-grid">
-			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
-			/>
-			<Card
-				href="https://astro.build/chat/"
-				title="Community"
-				body="Come say hi to our amazing Discord community. ❤️"
-			/>
-		</ul>
+		<section class="hero">
+			<p class="eyebrow">电商内容质量治理 · 问答记录</p>
+			<h1>AI 助审 Agent<br /><span class="text-gradient">精确率提升</span>问题与分析</h1>
+			<p class="lede">
+				围绕字节 CQC 大模型运营的完整业务链路——自动驳回模型、AI 助审 Agent、TCS
+				人审平台——分析「助审信息精确率仅 ~11%」的结构性原因,并给出误差归因、RAG
+				数据集与统一治理检测模型的落地建议。
+			</p>
+			<div class="cta-row">
+				<a class="btn primary" href={`${base}/answer/`}>阅读完整分析</a>
+				<a class="btn ghost" href={`${base}/question/`}>查看问题原文</a>
+			</div>
+		</section>
+
+		<section class="metrics">
+			{metrics.map((m) => (
+				<div class:list={['metric', m.tone]}>
+					<span class="metric-value">{m.value}</span>
+					<span class="metric-label">{m.label}</span>
+				</div>
+			))}
+		</section>
+
+		<section>
+			<h2>业务链路</h2>
+			<ol class="pipeline">
+				{pipeline.map((step, i) => (
+					<li class="pipeline-step">
+						<span class="step-index">{i + 1}</span>
+						<div>
+							<h3>{step.title}</h3>
+							<p>{step.desc}</p>
+						</div>
+					</li>
+				))}
+			</ol>
+		</section>
+
+		<section>
+			<h2>回答要点</h2>
+			<div class="point-grid">
+				{points.map((p) => (
+					<article class="point-card">
+						<h3>{p.title}</h3>
+						<p>{p.desc}</p>
+					</article>
+				))}
+			</div>
+		</section>
 	</main>
 </Layout>
 
 <style>
 	main {
-		margin: auto;
-		padding: 1.5rem;
-		max-width: 60ch;
+		margin: 0 auto;
+		padding: 3rem 1.5rem 4rem;
+		max-width: 960px;
+		width: 100%;
+	}
+	section {
+		margin-bottom: 3.5rem;
+	}
+	h2 {
+		font-size: 1.5rem;
+		margin: 0 0 1.25rem;
+	}
+	.hero {
+		text-align: center;
+		padding: 1.5rem 0 0.5rem;
+	}
+	.eyebrow {
+		display: inline-block;
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		color: var(--accent-strong);
+		background: var(--accent-soft);
+		padding: 0.35rem 0.9rem;
+		border-radius: 999px;
+		margin-bottom: 1rem;
 	}
 	h1 {
-		font-size: 3rem;
+		font-size: clamp(2rem, 5vw, 3.1rem);
 		font-weight: 800;
-		margin: 0;
+		line-height: 1.2;
+		margin: 0 0 1rem;
 	}
 	.text-gradient {
-		background-image: var(--accent-gradient);
+		background-image: linear-gradient(45deg, var(--accent-strong), #da62c4);
 		-webkit-background-clip: text;
+		background-clip: text;
 		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
 	}
-	.instructions {
-		line-height: 1.6;
-		margin: 1rem 0;
-		border: 1px solid rgba(var(--accent), 25%);
-		background-color: white;
-		padding: 1rem;
-		border-radius: 0.4rem;
+	.lede {
+		max-width: 42rem;
+		margin: 0 auto 1.75rem;
+		color: var(--ink-soft);
+		line-height: 1.8;
 	}
-	.instructions code {
-		font-size: 0.875em;
-		font-weight: bold;
-		background: rgba(var(--accent), 12%);
-		color: rgb(var(--accent));
-		border-radius: 4px;
-		padding: 0.3em 0.45em;
+	.cta-row {
+		display: flex;
+		gap: 0.75rem;
+		justify-content: center;
+		flex-wrap: wrap;
 	}
-	.instructions strong {
-		color: rgb(var(--accent));
+	.btn {
+		text-decoration: none;
+		font-weight: 600;
+		font-size: 0.95rem;
+		padding: 0.7rem 1.5rem;
+		border-radius: 10px;
+		transition: transform 0.15s ease, box-shadow 0.15s ease;
 	}
-	.link-card-grid {
+	.btn:hover {
+		transform: translateY(-2px);
+	}
+	.btn.primary {
+		background: linear-gradient(135deg, var(--accent-strong), #9333ea);
+		color: #fff;
+		box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+	}
+	.btn.ghost {
+		color: var(--accent-strong);
+		border: 1px solid rgba(var(--accent), 0.4);
+		background: var(--card);
+	}
+	.metrics {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 		gap: 1rem;
+	}
+	.metric {
+		background: var(--card);
+		border: 1px solid var(--line);
+		border-radius: var(--radius);
+		padding: 1.25rem 1.4rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+	.metric-value {
+		font-size: 1.9rem;
+		font-weight: 800;
+	}
+	.metric.bad .metric-value {
+		color: #dc2626;
+	}
+	.metric.mid .metric-value {
+		color: #d97706;
+	}
+	.metric.good .metric-value {
+		color: #059669;
+	}
+	.metric-label {
+		font-size: 0.88rem;
+		color: var(--ink-soft);
+		line-height: 1.5;
+	}
+	.pipeline {
+		list-style: none;
+		margin: 0;
 		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+	}
+	.pipeline-step {
+		display: flex;
+		gap: 1.1rem;
+		position: relative;
+		padding-bottom: 1.75rem;
+	}
+	.pipeline-step:last-child {
+		padding-bottom: 0;
+	}
+	.pipeline-step::before {
+		content: '';
+		position: absolute;
+		left: 17px;
+		top: 38px;
+		bottom: 2px;
+		width: 2px;
+		background: var(--line);
+	}
+	.pipeline-step:last-child::before {
+		display: none;
+	}
+	.step-index {
+		flex: none;
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, var(--accent-strong), #9333ea);
+		color: #fff;
+		font-weight: 700;
+		display: grid;
+		place-items: center;
+		z-index: 1;
+	}
+	.pipeline-step h3 {
+		margin: 0.3rem 0 0.35rem;
+		font-size: 1.05rem;
+	}
+	.pipeline-step p {
+		margin: 0;
+		color: var(--ink-soft);
+		font-size: 0.92rem;
+		line-height: 1.7;
+	}
+	.point-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1rem;
+	}
+	.point-card {
+		background: var(--card);
+		border: 1px solid var(--line);
+		border-radius: var(--radius);
+		padding: 1.4rem 1.5rem;
+		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+	}
+	.point-card:hover {
+		border-color: rgba(var(--accent), 0.5);
+		box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+	}
+	.point-card h3 {
+		margin: 0 0 0.6rem;
+		font-size: 1.02rem;
+		color: var(--accent-strong);
+	}
+	.point-card p {
+		margin: 0;
+		font-size: 0.9rem;
+		color: var(--ink-soft);
+		line-height: 1.75;
 	}
 </style>
