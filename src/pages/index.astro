@@ -97,16 +97,27 @@ const points = [
 		</section>
 
 		<section>
-			<h2 class="section-title"><span class="section-index">03</span>延伸:与广告部门的方向对比</h2>
-			<a class="feature-card" href={`${base}/ads-gap/`}>
-				<div class="feature-body">
-					<h3>助审优先 vs 替代优先</h3>
-					<p>
-						电商 CQC 走「先透传信息给人审参考,再逐步替代」,广告部门走「先替代人工选标签,再补助审」——两条路线刚好相反、也互补。为什么会形成相反路线?两边各自的隐含要求是什么?置信度分层为何是合流点?
-					</p>
-				</div>
-				<span class="feature-arrow">→</span>
-			</a>
+			<h2 class="section-title"><span class="section-index">03</span>延伸阅读</h2>
+			<div class="feature-stack">
+				<a class="feature-card" href={`${base}/ads-gap/`}>
+					<div class="feature-body">
+						<h3>助审优先 vs 替代优先:与广告部门的方向对比</h3>
+						<p>
+							电商 CQC 走「先透传信息给人审参考,再逐步替代」,广告部门走「先替代人工选标签,再补助审」——两条路线刚好相反、也互补。为什么会形成相反路线?两边各自的隐含要求是什么?置信度分层为何是合流点?
+						</p>
+					</div>
+					<span class="feature-arrow">→</span>
+				</a>
+				<a class="feature-card" href={`${base}/review-plan/`}>
+					<div class="feature-body">
+						<h3>从信息透传到结果复核:TCS 界面降噪与数据集建设指南</h3>
+						<p>
+							TCS 界面信息过载,低精确率的助审信息反而拉长审核时长。方案评价(硬前提 + 自动化偏见风险)、四阶段落地路径、技术选型、五张表的数据字段定义、数据集标准建立流程,以及新人避坑清单。
+						</p>
+					</div>
+					<span class="feature-arrow">→</span>
+				</a>
+			</div>
 		</section>
 	</main>
 </Layout>
@@ -343,6 +354,11 @@ const points = [
 		font-size: 0.88rem;
 		color: var(--ink-soft);
 		line-height: 1.8;
+	}
+	.feature-stack {
+		display: flex;
+		flex-direction: column;
+		gap: 0.8rem;
 	}
 	.feature-card {
 		display: flex;
