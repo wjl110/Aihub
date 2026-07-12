@@ -20,19 +20,23 @@ const metrics = [
 
 const points = [
 	{
-		title: '① 分层误差归因',
+		num: '01',
+		title: '分层误差归因',
 		desc: '修正评估集偏差(双人标注 + 仲裁,算 Kappa);把「细则定位误差」和「违规点判断误差」分开量化;认识到人审 case 是被前置模型筛过的难样本分布。',
 	},
 	{
-		title: '② 高质量数据集 + RAG',
+		num: '02',
+		title: '高质量数据集 + RAG',
 		desc: '以质检 / 研判复核结论为 label;固证(evidence)字段最有价值;检索键用「类目 + 违规码 + 标题 + 主图特征」多路召回;细则 ID 版本化防 label 腐化。',
 	},
 	{
-		title: '③ 统一治理检测模型',
+		num: '03',
+		title: '统一治理检测模型',
 		desc: '定位为多标签风险分类器,输出违规码概率 + 置信度,按置信度分层路由:高置信直接驳回、中置信带 Tag 进 Agent、低置信直接人审。',
 	},
 	{
-		title: '④ 助审产品指标',
+		num: '04',
+		title: '助审产品指标',
 		desc: '低精确率透传易造成锚定效应;TCS 侧埋点做 A/B 对比;覆盖量扩大跟着精确率走——先在单个「队列 × 体裁」做到 60%+ 再横向铺开。',
 	},
 ];
@@ -41,15 +45,16 @@ const points = [
 <Layout title="CQC 大模型运营 · AI 助审 Agent 精确率分析">
 	<main>
 		<section class="hero">
+			<div class="hero-glow" aria-hidden="true"></div>
 			<p class="eyebrow">电商内容质量治理 · 问答记录</p>
-			<h1>AI 助审 Agent<br /><span class="text-gradient">精确率提升</span>问题与分析</h1>
+			<h1>AI 助审 Agent 的<br />精确率提升问题与分析</h1>
 			<p class="lede">
 				围绕字节 CQC 大模型运营的完整业务链路——自动驳回模型、AI 助审 Agent、TCS
 				人审平台——分析「助审信息精确率仅 ~11%」的结构性原因,并给出误差归因、RAG
 				数据集与统一治理检测模型的落地建议。
 			</p>
 			<div class="cta-row">
-				<a class="btn primary" href={`${base}/answer/`}>阅读完整分析</a>
+				<a class="btn primary" href={`${base}/answer/`}>阅读完整分析<span class="arrow">→</span></a>
 				<a class="btn ghost" href={`${base}/question/`}>查看问题原文</a>
 			</div>
 		</section>
@@ -64,7 +69,7 @@ const points = [
 		</section>
 
 		<section>
-			<h2>业务链路</h2>
+			<h2 class="section-title"><span class="section-index">01</span>业务链路</h2>
 			<ol class="pipeline">
 				{pipeline.map((step, i) => (
 					<li class="pipeline-step">
@@ -79,10 +84,11 @@ const points = [
 		</section>
 
 		<section>
-			<h2>回答要点</h2>
+			<h2 class="section-title"><span class="section-index">02</span>回答要点</h2>
 			<div class="point-grid">
 				{points.map((p) => (
 					<article class="point-card">
+						<span class="point-num">{p.num}</span>
 						<h3>{p.title}</h3>
 						<p>{p.desc}</p>
 					</article>
@@ -95,108 +101,145 @@ const points = [
 <style>
 	main {
 		margin: 0 auto;
-		padding: 3rem 1.5rem 4rem;
-		max-width: 960px;
+		padding: 4rem 1.5rem 5rem;
+		max-width: 1024px;
 		width: 100%;
 	}
 	section {
-		margin-bottom: 3.5rem;
+		margin-bottom: 4.5rem;
 	}
-	h2 {
-		font-size: 1.5rem;
-		margin: 0 0 1.25rem;
+	.section-title {
+		display: flex;
+		align-items: baseline;
+		gap: 0.8rem;
+		font-size: 1.4rem;
+		font-weight: 700;
+		letter-spacing: -0.01em;
+		margin: 0 0 1.5rem;
+	}
+	.section-index {
+		font-family: var(--mono);
+		font-size: 0.78rem;
+		color: var(--ink-faint);
 	}
 	.hero {
+		position: relative;
 		text-align: center;
-		padding: 1.5rem 0 0.5rem;
+		padding: 2.5rem 0 1.5rem;
+	}
+	.hero-glow {
+		position: absolute;
+		inset: -40% -20% auto;
+		height: 340px;
+		background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.07) 0%, transparent 65%);
+		pointer-events: none;
 	}
 	.eyebrow {
 		display: inline-block;
-		font-size: 0.82rem;
-		font-weight: 600;
-		letter-spacing: 0.08em;
-		color: var(--accent-strong);
-		background: var(--accent-soft);
-		padding: 0.35rem 0.9rem;
+		font-family: var(--mono);
+		font-size: 0.74rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--ink-soft);
+		border: 1px solid var(--line);
+		background: rgba(255, 255, 255, 0.03);
+		padding: 0.4rem 0.95rem;
 		border-radius: 999px;
-		margin-bottom: 1rem;
+		margin-bottom: 1.4rem;
 	}
 	h1 {
-		font-size: clamp(2rem, 5vw, 3.1rem);
-		font-weight: 800;
-		line-height: 1.2;
-		margin: 0 0 1rem;
-	}
-	.text-gradient {
-		background-image: linear-gradient(45deg, var(--accent-strong), #da62c4);
+		font-size: clamp(2.1rem, 5.5vw, 3.4rem);
+		font-weight: 700;
+		line-height: 1.15;
+		letter-spacing: -0.03em;
+		margin: 0 0 1.2rem;
+		background: linear-gradient(180deg, #fff 40%, #999 100%);
 		-webkit-background-clip: text;
 		background-clip: text;
 		-webkit-text-fill-color: transparent;
 	}
 	.lede {
-		max-width: 42rem;
-		margin: 0 auto 1.75rem;
+		max-width: 40rem;
+		margin: 0 auto 2rem;
 		color: var(--ink-soft);
-		line-height: 1.8;
+		font-size: 1.02rem;
+		line-height: 1.85;
 	}
 	.cta-row {
 		display: flex;
-		gap: 0.75rem;
+		gap: 0.7rem;
 		justify-content: center;
 		flex-wrap: wrap;
 	}
 	.btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
 		text-decoration: none;
 		font-weight: 600;
-		font-size: 0.95rem;
-		padding: 0.7rem 1.5rem;
-		border-radius: 10px;
-		transition: transform 0.15s ease, box-shadow 0.15s ease;
+		font-size: 0.92rem;
+		padding: 0.68rem 1.4rem;
+		border-radius: 999px;
+		transition: opacity 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 	}
-	.btn:hover {
-		transform: translateY(-2px);
+	.btn .arrow {
+		transition: transform 0.15s ease;
+	}
+	.btn:hover .arrow {
+		transform: translateX(3px);
 	}
 	.btn.primary {
-		background: linear-gradient(135deg, var(--accent-strong), #9333ea);
-		color: #fff;
-		box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+		background: #fff;
+		color: #0a0a0a;
+	}
+	.btn.primary:hover {
+		opacity: 0.85;
 	}
 	.btn.ghost {
-		color: var(--accent-strong);
-		border: 1px solid rgba(var(--accent), 0.4);
-		background: var(--card);
+		color: var(--ink);
+		border: 1px solid var(--line-strong);
+		background: transparent;
+	}
+	.btn.ghost:hover {
+		background: rgba(255, 255, 255, 0.06);
 	}
 	.metrics {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-		gap: 1rem;
+		gap: 0.8rem;
 	}
 	.metric {
-		background: var(--card);
+		background: var(--panel);
 		border: 1px solid var(--line);
 		border-radius: var(--radius);
-		padding: 1.25rem 1.4rem;
+		padding: 1.3rem 1.4rem;
 		display: flex;
 		flex-direction: column;
-		gap: 0.35rem;
+		gap: 0.4rem;
+		transition: border-color 0.15s ease;
+	}
+	.metric:hover {
+		border-color: var(--line-strong);
 	}
 	.metric-value {
-		font-size: 1.9rem;
-		font-weight: 800;
+		font-family: var(--mono);
+		font-size: 1.8rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
 	}
 	.metric.bad .metric-value {
-		color: #dc2626;
+		color: #f87171;
 	}
 	.metric.mid .metric-value {
-		color: #d97706;
+		color: #fbbf24;
 	}
 	.metric.good .metric-value {
-		color: #059669;
+		color: #34d399;
 	}
 	.metric-label {
-		font-size: 0.88rem;
+		font-size: 0.85rem;
 		color: var(--ink-soft);
-		line-height: 1.5;
+		line-height: 1.55;
 	}
 	.pipeline {
 		list-style: none;
@@ -204,13 +247,12 @@ const points = [
 		padding: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 0;
 	}
 	.pipeline-step {
 		display: flex;
-		gap: 1.1rem;
+		gap: 1.15rem;
 		position: relative;
-		padding-bottom: 1.75rem;
+		padding-bottom: 1.8rem;
 	}
 	.pipeline-step:last-child {
 		padding-bottom: 0;
@@ -218,10 +260,10 @@ const points = [
 	.pipeline-step::before {
 		content: '';
 		position: absolute;
-		left: 17px;
+		left: 16px;
 		top: 38px;
 		bottom: 2px;
-		width: 2px;
+		width: 1px;
 		background: var(--line);
 	}
 	.pipeline-step:last-child::before {
@@ -229,51 +271,64 @@ const points = [
 	}
 	.step-index {
 		flex: none;
-		width: 36px;
-		height: 36px;
+		width: 33px;
+		height: 33px;
 		border-radius: 50%;
-		background: linear-gradient(135deg, var(--accent-strong), #9333ea);
-		color: #fff;
-		font-weight: 700;
+		background: var(--panel);
+		border: 1px solid var(--line-strong);
+		color: var(--ink);
+		font-family: var(--mono);
+		font-size: 0.82rem;
+		font-weight: 600;
 		display: grid;
 		place-items: center;
 		z-index: 1;
 	}
 	.pipeline-step h3 {
-		margin: 0.3rem 0 0.35rem;
-		font-size: 1.05rem;
+		margin: 0.25rem 0 0.35rem;
+		font-size: 1.02rem;
+		font-weight: 600;
+		letter-spacing: -0.01em;
 	}
 	.pipeline-step p {
 		margin: 0;
 		color: var(--ink-soft);
-		font-size: 0.92rem;
-		line-height: 1.7;
+		font-size: 0.9rem;
+		line-height: 1.75;
 	}
 	.point-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: 1rem;
+		gap: 0.8rem;
 	}
 	.point-card {
-		background: var(--card);
+		background: var(--panel);
 		border: 1px solid var(--line);
 		border-radius: var(--radius);
-		padding: 1.4rem 1.5rem;
-		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+		padding: 1.5rem 1.6rem;
+		transition: border-color 0.15s ease, background 0.15s ease;
 	}
 	.point-card:hover {
-		border-color: rgba(var(--accent), 0.5);
-		box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+		border-color: var(--line-strong);
+		background: var(--panel-hover);
+	}
+	.point-num {
+		font-family: var(--mono);
+		font-size: 0.74rem;
+		color: var(--ink-faint);
+		letter-spacing: 0.1em;
 	}
 	.point-card h3 {
-		margin: 0 0 0.6rem;
-		font-size: 1.02rem;
-		color: var(--accent-strong);
+		margin: 0.55rem 0 0.65rem;
+		font-size: 1.05rem;
+		font-weight: 600;
+		letter-spacing: -0.01em;
+		color: var(--ink);
 	}
 	.point-card p {
 		margin: 0;
-		font-size: 0.9rem;
+		font-size: 0.88rem;
 		color: var(--ink-soft);
-		line-height: 1.75;
+		line-height: 1.8;
 	}
 </style>

@@ -25,44 +25,55 @@ const { title, pageTitle, subtitle } = Astro.props;
 <style>
 	main {
 		margin: 0 auto;
-		padding: 3rem 1.5rem 4rem;
-		max-width: 780px;
+		padding: 3.5rem 1.5rem 4.5rem;
+		max-width: 760px;
 		width: 100%;
 	}
 	.article-header {
-		margin-bottom: 2rem;
-		padding-bottom: 1.5rem;
+		margin-bottom: 2.2rem;
+		padding-bottom: 1.6rem;
 		border-bottom: 1px solid var(--line);
 	}
 	h1 {
 		font-size: clamp(1.7rem, 4vw, 2.3rem);
-		font-weight: 800;
+		font-weight: 700;
+		letter-spacing: -0.025em;
 		margin: 0 0 0.6rem;
+		background: linear-gradient(180deg, #fff 40%, #999 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
 	.subtitle {
 		margin: 0;
-		color: var(--ink-soft);
+		font-family: var(--mono);
+		font-size: 0.8rem;
+		letter-spacing: 0.04em;
+		color: var(--ink-faint);
 	}
 </style>
 
 <style is:global>
 	.prose {
-		line-height: 1.85;
-		color: var(--ink);
+		line-height: 1.9;
+		color: var(--ink-soft);
+		font-size: 0.96rem;
 	}
 	.prose h1 {
 		display: none; /* markdown 首行标题由页面头部渲染,避免重复 */
 	}
 	.prose h2 {
-		font-size: 1.35rem;
-		margin: 2.4rem 0 1rem;
-		padding-left: 0.85rem;
-		border-left: 4px solid var(--accent-strong);
+		font-size: 1.32rem;
+		font-weight: 700;
+		letter-spacing: -0.015em;
+		color: var(--ink);
+		margin: 2.6rem 0 1rem;
 	}
 	.prose h3 {
-		font-size: 1.08rem;
-		margin: 1.8rem 0 0.7rem;
-		color: var(--accent-strong);
+		font-size: 1.05rem;
+		font-weight: 600;
+		color: var(--ink);
+		margin: 1.9rem 0 0.7rem;
 	}
 	.prose p {
 		margin: 0 0 1rem;
@@ -73,13 +84,16 @@ const { title, pageTitle, subtitle } = Astro.props;
 		margin: 0 0 1rem;
 	}
 	.prose li {
-		margin-bottom: 0.4rem;
+		margin-bottom: 0.45rem;
+	}
+	.prose li::marker {
+		color: var(--ink-faint);
 	}
 	.prose blockquote {
 		margin: 0 0 1.25rem;
-		padding: 0.75rem 1.2rem;
-		background: var(--accent-soft);
-		border-left: 4px solid var(--accent-strong);
+		padding: 0.8rem 1.2rem;
+		background: var(--panel);
+		border-left: 2px solid var(--line-strong);
 		border-radius: 0 10px 10px 0;
 		color: var(--ink-soft);
 	}
@@ -90,8 +104,8 @@ const { title, pageTitle, subtitle } = Astro.props;
 		width: 100%;
 		border-collapse: collapse;
 		margin: 0 0 1.25rem;
-		font-size: 0.92rem;
-		background: var(--card);
+		font-size: 0.88rem;
+		background: var(--panel);
 		border-radius: 10px;
 		overflow: hidden;
 	}
@@ -102,24 +116,26 @@ const { title, pageTitle, subtitle } = Astro.props;
 		text-align: left;
 	}
 	.prose th {
-		background: var(--accent-soft);
+		background: rgba(255, 255, 255, 0.05);
+		color: var(--ink);
 		font-weight: 600;
 	}
 	.prose code {
-		background: rgba(var(--accent), 0.1);
-		color: var(--accent-strong);
+		background: rgba(255, 255, 255, 0.08);
+		color: var(--ink);
 		border-radius: 5px;
 		padding: 0.15em 0.4em;
-		font-size: 0.88em;
+		font-size: 0.85em;
 	}
 	.prose pre {
-		background: #0f172a;
-		color: #e2e8f0;
+		background: var(--panel);
+		border: 1px solid var(--line);
+		color: var(--ink);
 		border-radius: 12px;
 		padding: 1.1rem 1.3rem;
 		overflow-x: auto;
-		font-size: 0.85rem;
-		line-height: 1.7;
+		font-size: 0.83rem;
+		line-height: 1.75;
 		margin: 0 0 1.25rem;
 	}
 	.prose pre code {
@@ -128,14 +144,21 @@ const { title, pageTitle, subtitle } = Astro.props;
 		padding: 0;
 	}
 	.prose strong {
-		color: var(--accent-strong);
+		color: var(--ink);
+		font-weight: 600;
 	}
 	.prose hr {
 		border: none;
 		border-top: 1px solid var(--line);
-		margin: 2rem 0;
+		margin: 2.2rem 0;
 	}
 	.prose a {
-		color: var(--accent-strong);
+		color: var(--ink);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		text-decoration-color: var(--line-strong);
+	}
+	.prose a:hover {
+		text-decoration-color: var(--ink);
 	}
 </style>
