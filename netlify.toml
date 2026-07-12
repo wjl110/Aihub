@@ -1,0 +1,9 @@
+# Netlify 构建配置(仓库内配置优先于站点 UI 配置)
+# 该仓库关联的 Netlify 站点创建于 2023 年、无构建设置,导致每个 PR 的
+# Deploy Preview 失败;此文件显式声明构建方式以修复 CI 检查。
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
