@@ -17,6 +17,7 @@
 | `/` | 概览:业务链路、关键指标、回答要点 |
 | `/question/` | 问题原文(业务背景与当前思路) |
 | `/answer/` | 完整分析(误差归因、RAG 数据集、统一治理检测模型、助审产品指标) |
+| `/ads-gap/` | 延伸:与广告部门自动审核项目的方向对比(助审优先 vs 替代优先) |
 
 ## 项目结构
 
@@ -26,7 +27,8 @@
 ├── cqc-llm-ops-qa/                # 问答内容源文件(Markdown)
 │   ├── README.md                  # 内容导航与摘要
 │   ├── question.md                # 问题原文
-│   └── answer.md                  # 完整分析
+│   ├── answer.md                  # 完整分析
+│   └── ads-gap.md                 # 与广告部门的方向对比
 ├── src/
 │   ├── layouts/
 │   │   ├── Layout.astro           # 全局布局(导航栏 + 页脚)
@@ -34,7 +36,8 @@
 │   └── pages/
 │       ├── index.astro            # 概览首页
 │       ├── question.astro         # 渲染 question.md
-│       └── answer.astro           # 渲染 answer.md
+│       ├── answer.astro           # 渲染 answer.md
+│       └── ads-gap.astro          # 渲染 ads-gap.md
 └── astro.config.mjs               # 已配置 site/base 以适配 GitHub Pages
 ```
 
