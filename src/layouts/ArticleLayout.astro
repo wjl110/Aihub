@@ -1,0 +1,141 @@
+---
+import Layout from './Layout.astro';
+
+export interface Props {
+	title: string;
+	pageTitle: string;
+	subtitle?: string;
+}
+
+const { title, pageTitle, subtitle } = Astro.props;
+---
+
+<Layout title={title}>
+	<main>
+		<header class="article-header">
+			<h1>{pageTitle}</h1>
+			{subtitle && <p class="subtitle">{subtitle}</p>}
+		</header>
+		<article class="prose">
+			<slot />
+		</article>
+	</main>
+</Layout>
+
+<style>
+	main {
+		margin: 0 auto;
+		padding: 3rem 1.5rem 4rem;
+		max-width: 780px;
+		width: 100%;
+	}
+	.article-header {
+		margin-bottom: 2rem;
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid var(--line);
+	}
+	h1 {
+		font-size: clamp(1.7rem, 4vw, 2.3rem);
+		font-weight: 800;
+		margin: 0 0 0.6rem;
+	}
+	.subtitle {
+		margin: 0;
+		color: var(--ink-soft);
+	}
+</style>
+
+<style is:global>
+	.prose {
+		line-height: 1.85;
+		color: var(--ink);
+	}
+	.prose h1 {
+		display: none; /* markdown 首行标题由页面头部渲染,避免重复 */
+	}
+	.prose h2 {
+		font-size: 1.35rem;
+		margin: 2.4rem 0 1rem;
+		padding-left: 0.85rem;
+		border-left: 4px solid var(--accent-strong);
+	}
+	.prose h3 {
+		font-size: 1.08rem;
+		margin: 1.8rem 0 0.7rem;
+		color: var(--accent-strong);
+	}
+	.prose p {
+		margin: 0 0 1rem;
+	}
+	.prose ul,
+	.prose ol {
+		padding-left: 1.4rem;
+		margin: 0 0 1rem;
+	}
+	.prose li {
+		margin-bottom: 0.4rem;
+	}
+	.prose blockquote {
+		margin: 0 0 1.25rem;
+		padding: 0.75rem 1.2rem;
+		background: var(--accent-soft);
+		border-left: 4px solid var(--accent-strong);
+		border-radius: 0 10px 10px 0;
+		color: var(--ink-soft);
+	}
+	.prose blockquote p {
+		margin: 0;
+	}
+	.prose table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 0 0 1.25rem;
+		font-size: 0.92rem;
+		background: var(--card);
+		border-radius: 10px;
+		overflow: hidden;
+	}
+	.prose th,
+	.prose td {
+		border: 1px solid var(--line);
+		padding: 0.6rem 0.9rem;
+		text-align: left;
+	}
+	.prose th {
+		background: var(--accent-soft);
+		font-weight: 600;
+	}
+	.prose code {
+		background: rgba(var(--accent), 0.1);
+		color: var(--accent-strong);
+		border-radius: 5px;
+		padding: 0.15em 0.4em;
+		font-size: 0.88em;
+	}
+	.prose pre {
+		background: #0f172a;
+		color: #e2e8f0;
+		border-radius: 12px;
+		padding: 1.1rem 1.3rem;
+		overflow-x: auto;
+		font-size: 0.85rem;
+		line-height: 1.7;
+		margin: 0 0 1.25rem;
+	}
+	.prose pre code {
+		background: none;
+		color: inherit;
+		padding: 0;
+	}
+	.prose strong {
+		color: var(--accent-strong);
+	}
+	.prose hr {
+		border: none;
+		border-top: 1px solid var(--line);
+		margin: 2rem 0;
+	}
+	.prose a {
+		color: var(--accent-strong);
+	}
+</style>

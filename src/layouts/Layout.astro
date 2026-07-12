@@ -1,35 +1,150 @@
 ---
 export interface Props {
 	title: string;
+	description?: string;
 }
 
-const { title } = Astro.props;
+const { title, description = '字节 CQC 大模型运营:自动驳回模型与 AI 助审 Agent 精确率分析' } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const nav = [
+	{ href: `${base}/`, label: '概览' },
+	{ href: `${base}/question/`, label: '问题原文' },
+	{ href: `${base}/answer/`, label: '完整分析' },
+];
+
+const currentPath = Astro.url.pathname;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
 		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
 		<title>{title}</title>
 	</head>
 	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<a class="brand" href={`${base}/`}>
+					<span class="brand-mark">CQC</span>
+					<span class="brand-text">大模型运营 · AI 助审</span>
+				</a>
+				<nav>
+					{nav.map((item) => (
+						<a
+							href={item.href}
+							class:list={['nav-link', { active: currentPath === item.href || currentPath === item.href.replace(/\/$/, '') }]}
+						>
+							{item.label}
+						</a>
+					))}
+				</nav>
+			</div>
+		</header>
 		<slot />
+		<footer class="site-footer">
+			<p>电商内容质量治理(CQC)问答记录 · 2026-07-12 整理</p>
+		</footer>
 	</body>
 </html>
+
 <style is:global>
 	:root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
+		--accent: 99, 102, 241;
+		--accent-strong: #4f46e5;
+		--accent-soft: #eef2ff;
+		--ink: #1e293b;
+		--ink-soft: #475569;
+		--line: #e2e8f0;
+		--bg: #f8fafc;
+		--card: #ffffff;
+		--radius: 14px;
+	}
+	* {
+		box-sizing: border-box;
 	}
 	html {
-		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
+		font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+		background-color: var(--bg);
+		color: var(--ink);
+		scroll-behavior: smooth;
+	}
+	body {
+		margin: 0;
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
 	}
 	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
+		font-family: Menlo, Monaco, 'Courier New', monospace;
+	}
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		backdrop-filter: blur(12px);
+		background: rgba(255, 255, 255, 0.85);
+		border-bottom: 1px solid var(--line);
+	}
+	.header-inner {
+		max-width: 960px;
+		margin: 0 auto;
+		padding: 0.85rem 1.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		text-decoration: none;
+		color: var(--ink);
+		font-weight: 700;
+	}
+	.brand-mark {
+		background: linear-gradient(135deg, var(--accent-strong), #9333ea);
+		color: #fff;
+		font-size: 0.8rem;
+		letter-spacing: 0.05em;
+		padding: 0.3rem 0.55rem;
+		border-radius: 8px;
+	}
+	.brand-text {
+		font-size: 0.95rem;
+	}
+	nav {
+		display: flex;
+		gap: 0.25rem;
+	}
+	.nav-link {
+		text-decoration: none;
+		color: var(--ink-soft);
+		font-size: 0.92rem;
+		padding: 0.45rem 0.9rem;
+		border-radius: 999px;
+		transition: background 0.15s ease, color 0.15s ease;
+	}
+	.nav-link:hover {
+		background: var(--accent-soft);
+		color: var(--accent-strong);
+	}
+	.nav-link.active {
+		background: var(--accent-strong);
+		color: #fff;
+	}
+	.site-footer {
+		margin-top: auto;
+		border-top: 1px solid var(--line);
+		text-align: center;
+		color: var(--ink-soft);
+		font-size: 0.85rem;
+		padding: 1.5rem 1rem 2rem;
 	}
 </style>
