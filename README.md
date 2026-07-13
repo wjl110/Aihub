@@ -19,6 +19,7 @@
 | `/answer/` | 完整分析(误差归因、RAG 数据集、统一治理检测模型、助审产品指标) |
 | `/ads-gap/` | 延伸:与广告部门自动审核项目的方向对比(助审优先 vs 替代优先) |
 | `/review-plan/` | 延伸:TCS 界面降噪与结果复核方案、数据字段定义、数据集建设新人指南 |
+| `/data-design/` | 延伸:基于研判表的 RAG / 数据集 / SFT 设计(字段映射、回捞管道、蒸馏) |
 
 ## 项目结构
 
@@ -30,7 +31,8 @@
 │   ├── question.md                # 问题原文
 │   ├── answer.md                  # 完整分析
 │   ├── ads-gap.md                 # 与广告部门的方向对比
-│   └── review-plan.md             # 界面降噪与数据集建设指南
+│   ├── review-plan.md             # 界面降噪与数据集建设指南
+│   └── data-design.md             # 基于研判表的 RAG/数据集/SFT 设计
 ├── src/
 │   ├── layouts/
 │   │   ├── Layout.astro           # 全局布局(导航栏 + 页脚)
@@ -40,7 +42,8 @@
 │       ├── question.astro         # 渲染 question.md
 │       ├── answer.astro           # 渲染 answer.md
 │       ├── ads-gap.astro          # 渲染 ads-gap.md
-│       └── review-plan.astro      # 渲染 review-plan.md
+│       ├── review-plan.astro      # 渲染 review-plan.md
+│       └── data-design.astro      # 渲染 data-design.md
 └── astro.config.mjs               # 已配置 site/base 以适配 GitHub Pages
 ```
 
